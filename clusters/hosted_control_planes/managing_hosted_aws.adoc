@@ -274,7 +274,7 @@ For accounts with public clusters, the infrastructure requirements are as follow
 
 For accounts with private clusters, the infrastructure requirements are as follows:
 
-* Network Load Balancer: a load balancer private router
+* Network load balancer: a load balancer private router
 * Endpoint service (private link)
 
 For accounts with public and private clusters, the infrastructure requirements are as follows:
