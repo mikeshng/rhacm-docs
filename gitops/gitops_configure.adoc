@@ -27,7 +27,7 @@ spec:
   config:
     env:
     - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
-      value: openshift-gitops,local-cluster
+      value: openshift-gitops
     - name: ARGOCD_PRINCIPAL_TLS_SERVER_ALLOW_GENERATE
       value: "false"
     - name: ARGOCD_PRINCIPAL_REDIS_SERVER_ADDRESS
@@ -46,7 +46,7 @@ metadata:
   namespace: openshift-gitops
 spec:
   controller:
-    enabled: false
+    enabled: true
   sourceNamespaces:
   - '*'
   argoCDAgent:
@@ -70,7 +70,7 @@ spec:
 oc apply -f argocd-example.yaml
 ----
 
-*Note:* On the hub cluster only, this configuration disables the traditional `ArgoCD` controller and enables the agent principal with mutual TLS authentication. The `sourceNamespaces` field with `*` allows applications from any namespace. The `server.route.enabled` field creates an {ocp-short} Route for the agent principal, which is used for agent-to-hub communication.
+*Note:* This configuration keeps the traditional `ArgoCD` controller enabled alongside the agent principal, so the same {gitops-short} instance can reconcile applications that target `local-cluster` directly while the principal dispatches everything else to agents. The `sourceNamespaces` field with `*` allows applications from any namespace. The `server.route.enabled` field creates an {ocp-short} Route for the agent principal, which is used for agent-to-hub communication.
 
 . Configure the `default` `AppProject` in `openshift-gitops` with wildcard settings. Apply the following YAML sample:
 
@@ -86,7 +86,7 @@ spec:
   sourceNamespaces:
   - <source-namespace>
   destinations:
-  - name: <destination-namespace>
+  - name: '*'
     namespace: <destination-namespace>
     server: <destination-server>
   clusterResourceWhitelist:
@@ -105,7 +105,7 @@ spec:
 - Replace `<source-repo>` with the source repository.
 
 +
-*Note:* The principal only propagates `AppProject` resources whose destinations and `sourceNamespaces` match the agent configuration. Without wildcards, propagation is skipped and agents cannot find the `AppProject` applications.
+*Note:* The `destinations[].name` field must include an entry set to `'*'`. The principal only propagates `AppProject` resources whose destinations and `sourceNamespaces` match the agent configuration, and it matches agents by name. Without the `'*'` wildcard, propagation is skipped and agents cannot find the `AppProject` applications.
 
 . Apply the YAML sample. Run the following command:
 

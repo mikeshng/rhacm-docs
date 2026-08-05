@@ -62,74 +62,8 @@ spec:
   gitopsAddon:
     enabled: true
     gitOpsOperatorImage: "registry.redhat.io/openshift-gitops-1/gitops-operator@sha256:..."
-    gitOpsImage: "registry.redhat.io/openshift-gitops-1/argocd@sha256:..."
-    redisImage: "registry.redhat.io/rhel8/redis-6@sha256:..."
 ----
-
-. Apply the YAML sample by running the following command:  
-
 +
-[source,bash]
-----
-oc apply -f gitopscluster-example.yaml 
-----
-
-. Customize the namespaces where you deploy the the {gitops-short} components by adding the following YAML with the `GitOpsCluster`:
-
-+
-[source,yaml]
-----
-apiVersion: apps.open-cluster-management.io/v1beta1
-kind: GitOpsCluster
-metadata:
-  name: gitops-custom-namespaces
-  namespace: openshift-gitops
-spec:
-  argoServer:
-    argoNamespace: openshift-gitops
-  placementRef:
-    kind: Placement
-    apiVersion: cluster.open-cluster-management.io/v1beta1
-    name: all-openshift-clusters
-    namespace: openshift-gitops
-  gitopsAddon:
-    enabled: true
-    gitOpsOperatorNamespace: openshift-gitops-operator
-    gitOpsNamespace: openshift-gitops
-----
-
-. Apply the YAML sample by running the following command:  
-
-+
-[source,bash]
-----
-oc apply -f gitopscluster-example.yaml 
-----
-
-. Specify if the Argo CD Agent can reconcile application in all namespaces.
-.. If you want the `ArgoCD` instance to reconcile applications in all namespaces, set the `reconcileScope` field to `All-Namespaces`.
-.. If you want the the `ArgoCD` instance to only reconcile applications in its own namespace, set the `reconcileScope` field to `Single-Namespace`. View the following `GitOpsCluster` resource file:
-
-+
-[source,yaml]
-----
-apiVersion: apps.open-cluster-management.io/v1beta1
-kind: GitOpsCluster
-metadata:
-  name: gitops-reconcile-scope
-  namespace: openshift-gitops
-spec:
-  argoServer:
-    argoNamespace: openshift-gitops
-  placementRef:
-    kind: Placement
-    apiVersion: cluster.open-cluster-management.io/v1beta1
-    name: all-openshift-clusters
-    namespace: openshift-gitops
-  gitopsAddon:
-    enabled: true
-    reconcileScope: 
-----
 
 . Apply the YAML sample by running the following command:
 

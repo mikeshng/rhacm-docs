@@ -184,6 +184,9 @@ spec:
 +
 *Note:* The `destination.name: '{{name}}'` field uses destination-based mapping so that the principal routes applications to the correct agent. The `configMapRef: acm-placement` references the duck-type `ConfigMap` that the `GitOpsCluster` controller creates automatically.
 
++
+*Known issue:* If the same `ApplicationSet` also targets `local-cluster` (the hub) alongside a real managed cluster, the `local-cluster` application syncs and reports health normally, but its resource tree and live manifest view fail to load in the Argo CD UI.
+
 .. Apply the YAML sample by running the following command:
 
 +

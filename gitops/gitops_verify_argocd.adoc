@@ -32,5 +32,5 @@ oc get pods -n openshift-gitops -l app.kubernetes.io/part-of=argocd-agent --cont
 +
 [source,bash]
 ----
-oc get manifestwork -n <managed-cluster-name> argocd-agent-ca-propagation -o yaml
+oc get manifestwork -n <managed-cluster-name> argocd-agent-ca-mw -o yaml
 ----
